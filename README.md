@@ -10,10 +10,21 @@ Inspiriert durch [STUDENTENGRUPPE "DURCHGEZAEHLT"](https://durchgezaehlt.wordpre
 
 ![](http://i.imgur.com/aW8KocQ.jpg)
 
-[Am besten das IPython Notebook ansehen](videocounter.ipynb)
+[Am besten das IPython Notebook ansehen](https://github.com/balzer82/Demoteilnehmer-Counter/blob/master/videocounter.ipynb)
+
+## Wie gut klappt das automatisch?
+
+```
+automatisch: 2600 Teilnehmer
+manuell durch STUDENTENGRUPPE "DURCHGEZAEHLT": 2.597
+```
+
+## Wie lange dauert das?
+
+Ungefähr 10min incl. Video runterladen, in Einzelbilder verwandeln und durch OpenCV jagen.
 
 
-## Wie?
+## Wie geht das?
 
 1. Python
 2. OpenCV
