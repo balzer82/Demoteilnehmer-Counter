@@ -2,6 +2,8 @@
 
 ## Zählt Menschen im Videobild
 
+![Demo](https://raw.githubusercontent.com/balzer82/Demoteilnehmer-Counter/master/screenshots/pegida_demo_11052015_043_marked.jpg)
+
 Klappt fast perfekt, wenn die einzelnen Menschen im Ganzen zu sehen sind (also incl. Beinen). Weil das bei Demos fast nie so ist, gibt es einen `crowd_factor` der das Verdecken ausgleicht. Umso dichter die Menschen stehen, umso höher muss dieser sein.
 
 ### Beispiel: SCHÄTZUNG TEILNEHMERZAHL PEGIDA 11.05.2015
