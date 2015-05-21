@@ -17,7 +17,7 @@ Inspiriert durch [STUDENTENGRUPPE "DURCHGEZAEHLT"](https://durchgezaehlt.wordpre
 ## Wie gut klappt das automatisch?
 
 ```
-automatisch: 2.600 Teilnehmer
+automatisch: 2.252 Teilnehmer
 vom Menschen: 2.597 Teilnehmer (durch STUDENTENGRUPPE "DURCHGEZAEHLT")
 ```
 

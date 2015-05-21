@@ -1,17 +1,15 @@
 
 # coding: utf-8
 
-# # `Automatisierte` SCHÄTZUNG TEILNEHMERZAHL PEGIDA 11.05.2015
+# # `Automatisierte` SCHÄTZUNG TEILNEHMERZAHL PEGIDA 18.05.2015
 # 
-# Inspiriert durch https://durchgezaehlt.wordpress.com/2015/05/12/schatzung-teilnehmerzahl-pegida-11-05-2015/
-# 
-# Hier die automatische Variante. :)
+# Evaluation des Algorithmus für neues Video
 
 # ### 1. Download Video from YouTube
 
-# In[1]:
+# In[16]:
 
-get_ipython().system(u'youtube-dl http://youtu.be/5K8bZHfjWcg')
+#!youtube-dl https://www.youtube.com/watch?v=TMBY1Sb712k
 
 
 # ### 2. Extract 1 image every 10 seconds
@@ -20,14 +18,14 @@ get_ipython().system(u'youtube-dl http://youtu.be/5K8bZHfjWcg')
 # 
 # see http://www.linuxers.org/tutorial/how-extract-images-video-using-ffmpeg
 
-# In[2]:
+# In[17]:
 
-get_ipython().system(u'ffmpeg -i Pegida\\ am\\ 11.05.2015\\ in\\ Dresden-5K8bZHfjWcg.mp4 -qscale:v 2 -r 1/10 -s hd720 screenshots/pegida_demo_11052015_%3d.jpg')
+#!ffmpeg -i Pegida\ Demonstration\ 18.05.2015\ in\ Dresden-TMBY1Sb712k.mp4 -qscale:v 2 -r 1/10 -s hd720 screenshots/pegida_demo_18052015_%3d.jpg
 
 
 # ### 3. Code some Stuff
 
-# In[3]:
+# In[18]:
 
 import cv2
 print cv2.__version__
@@ -42,7 +40,7 @@ import os
 
 # this little helper code is from here, in case you want to mark people in images: http://stackoverflow.com/questions/28476343/how-to-correctly-use-peopledetect-py-in-opencv
 
-# In[4]:
+# In[19]:
 
 def inside(r, q):
     rx, ry, rw, rh = r
@@ -50,7 +48,7 @@ def inside(r, q):
     return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
 
 
-# In[5]:
+# In[20]:
 
 def draw_detections(img, rects, thickness = 1):
     for x, y, w, h in rects:
@@ -64,7 +62,7 @@ def draw_detections(img, rects, thickness = 1):
 # 
 # see undocumented OpenCV: https://github.com/Itseez/opencv/blob/master/samples/python2/peopledetect.py
 
-# In[6]:
+# In[21]:
 
 def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale=1.05, crowd_factor=1.8, save_result_as='None'):
     hog = cv2.HOGDescriptor()
@@ -105,17 +103,17 @@ def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale
 # 
 # ![](http://i.imgur.com/aW8KocQ.jpg)
 
-# In[7]:
+# In[22]:
 
 screenshots = [f for f in os.listdir('./screenshots') if f.endswith('.jpg') and not f.endswith('marked.jpg')]
 
 
-# In[8]:
+# In[23]:
 
 #screenshots = ['pegida_demo_11052015_022.jpg']
 
 
-# In[9]:
+# In[24]:
 
 demonstrationszug = []
 for jpg in screenshots:
@@ -137,19 +135,19 @@ for jpg in screenshots:
     demonstrationszug.append(people)
 
 
-# In[10]:
+# In[25]:
 
 plt.bar([b+5 for b in range(len(demonstrationszug))], demonstrationszug)
 plt.xlabel('Bild #')
 plt.ylabel('Anzahl Personen im Bild')
 
 
-# In[11]:
+# In[26]:
 
 print('Insgesamt %i Teilnehmer.' % np.sum(demonstrationszug))
 
 
-# manuell wurden durch [STUDENTENGRUPPE "DURCHGEZAEHLT"](https://durchgezaehlt.wordpress.com) 2.597 Personen im Demonstrationszug gezählt
+# manuell wurden durch [STUDENTENGRUPPE "DURCHGEZAEHLT"](https://durchgezaehlt.wordpress.com) 2.601 Personen im Demonstrationszug gezählt
 
 # ## Fehlerquellen
 # 
