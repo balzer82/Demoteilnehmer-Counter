@@ -18,7 +18,7 @@ Inspiriert durch [STUDENTENGRUPPE "DURCHGEZAEHLT"](https://durchgezaehlt.wordpre
 
 ```
 automatisch: 2.600 Teilnehmer
-manuell durch STUDENTENGRUPPE "DURCHGEZAEHLT": 2.597
+vom Menschen: 2.597 Teilnehmer (durch STUDENTENGRUPPE "DURCHGEZAEHLT")
 ```
 
 ## Wie lange dauert das?
