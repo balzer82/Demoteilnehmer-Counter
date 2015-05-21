@@ -9,7 +9,7 @@
 
 # ### 1. Download Video from YouTube
 
-# In[40]:
+# In[13]:
 
 #!youtube-dl http://youtu.be/5K8bZHfjWcg
 
@@ -20,14 +20,14 @@
 # 
 # see http://www.linuxers.org/tutorial/how-extract-images-video-using-ffmpeg
 
-# In[41]:
+# In[14]:
 
 #!ffmpeg -i Pegida\ am\ 11.05.2015\ in\ Dresden-5K8bZHfjWcg.mp4 -qscale:v 2 -r 1/10 -s hd720 screenshots/pegida_demo_11052015_%3d.jpg
 
 
 # ### 3. Code some Stuff
 
-# In[42]:
+# In[15]:
 
 import cv2
 print cv2.__version__
@@ -42,7 +42,7 @@ import os
 
 # this little helper code is from here, in case you want to mark people in images: http://stackoverflow.com/questions/28476343/how-to-correctly-use-peopledetect-py-in-opencv
 
-# In[43]:
+# In[16]:
 
 def inside(r, q):
     rx, ry, rw, rh = r
@@ -50,7 +50,7 @@ def inside(r, q):
     return rx > qx and ry > qy and rx + rw < qx + qw and ry + rh < qy + qh
 
 
-# In[44]:
+# In[17]:
 
 def draw_detections(img, rects, thickness = 1):
     for x, y, w, h in rects:
@@ -64,9 +64,9 @@ def draw_detections(img, rects, thickness = 1):
 # 
 # see undocumented OpenCV: https://github.com/Itseez/opencv/blob/master/samples/python2/peopledetect.py
 
-# In[45]:
+# In[18]:
 
-def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale=1.05, crowd_factor=2.08):
+def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale=1.05, crowd_factor=2.08, save_result_as='None'):
     hog = cv2.HOGDescriptor()
     hog.setSVMDetector( cv2.HOGDescriptor_getDefaultPeopleDetector() )
 
@@ -79,19 +79,25 @@ def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale
                 break
         else:
             found_filtered.append(r)
-    '''
-    draw_detections(img, found)
-    draw_detections(img, found_filtered, 3)
-    print '%d (%d) found' % (len(found_filtered), len(found))
+
+    #print '%d (%d) found' % (len(found_filtered), len(found))
     
-    plt.title("marked image")
-    plt.imshow(img)
-    plt.axis('off')
-    '''
     # because of hidden people behind others,
     # we multiply with empirically choosen crowd factor 
     people = int(len(found_filtered)*crowd_factor)
+
     
+    if save_result_as!='None':
+        #draw_detections(img, found)
+        draw_detections(img, found_filtered, 3)
+
+        plt.title(u"%i Personen in Bild #%s geschätzt" % (people, save_result_as[-14:-11]))
+        plt.imshow(img, cmap='gray')
+        plt.axis('off')
+        plt.tight_layout()
+        plt.savefig(save_result_as, dpi=150)
+        plt.close()
+
     return people
 
 
@@ -99,43 +105,46 @@ def detectpeople(img, hitThreshold=-0.3, winStride=(6,6), padding=(32,32), scale
 # 
 # ![](http://i.imgur.com/aW8KocQ.jpg)
 
-# In[46]:
+# In[19]:
 
-screenshots = [f for f in os.listdir('./screenshots') if f.endswith('.jpg')]
+screenshots = [f for f in os.listdir('./screenshots') if f.endswith('.jpg') and not f.endswith('marked.jpg')]
 
 
-# In[47]:
+# In[20]:
 
 #screenshots = ['pegida_demo_11052015_022.jpg']
 
 
-# In[48]:
+# In[21]:
 
 demonstrationszug = []
 for jpg in screenshots:
-    capture = cv2.cv.CaptureFromFile('./screenshots/' + jpg)
+    
+    jpgname = './screenshots/' + jpg
+    
+    capture = cv2.cv.CaptureFromFile(jpgname)
     if not capture:
         print "Error loading video file"
-        # Should exit the application
+        break
 
     img = cv2.cv.QueryFrame(capture)
     img = np.array(img[:])
 
-    people = detectpeople(img)
+    people = detectpeople(img, save_result_as=jpgname[:-4]+'_marked.jpg')
     
-    print('%i Teilnehmer auf \'%s\' gefunden.' % (people, jpg))
+    print(u'%i Teilnehmer auf \'%s\' geschätzt.' % (people, jpg))
     
     demonstrationszug.append(people)
 
 
-# In[49]:
+# In[38]:
 
-plt.plot(demonstrationszug)
+plt.bar([b+5 for b in range(len(demonstrationszug))], demonstrationszug)
 plt.xlabel('Bild #')
 plt.ylabel('Anzahl Personen im Bild')
 
 
-# In[50]:
+# In[23]:
 
 print('Insgesamt %i Teilnehmer.' % np.sum(demonstrationszug))
 
